@@ -12,6 +12,7 @@ import cn.icbc.shop.ShoppingCart;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 /**
  * 单元测试类
@@ -47,8 +48,9 @@ public class AppTest {
         BigDecimal starwberryValue=new BigDecimal(starwberry.getPrice()).multiply(starwberryQty);
         BigDecimal totalExpected=appLeValue.add(starwberryValue);
 
-        System.out.println("买入苹果斤数："+appleQty.toString());
-        System.out.println("买入草莓斤数："+starwberryQty.toString());
+        for(Map.Entry<Fruit, BigDecimal> item: cart.getItems().entrySet()){
+            System.out.println("买入水果"+item.getKey().getName()+"每斤/元："+item.getKey().getPrice()+"买入斤数："+item.getValue().toString());
+        }
         System.out.println("第一题买入总价："+totalExpected);
 
         //对比总价
@@ -83,9 +85,9 @@ public class AppTest {
 
         BigDecimal totalExpected=appLeValue.add(starwberryValue).add(mangoValue);
 
-        System.out.println("买入苹果斤数："+appleQty.toString());
-        System.out.println("买入草莓斤数："+starwberryQty.toString());
-        System.out.println("买入mango斤数："+mangoQty.toString());
+        for(Map.Entry<Fruit, BigDecimal> item: cart.getItems().entrySet()){
+            System.out.println("买入水果"+item.getKey().getName()+"每斤/元："+item.getKey().getPrice()+"买入斤数："+item.getValue().toString());
+        }
 
         System.out.println("第二题买入总价元："+totalExpected);
 
@@ -121,9 +123,10 @@ public class AppTest {
 
         BigDecimal totalExpected=appLeValue.add(starwberryValue).add(mangoValue);
 
-        System.out.println("买入苹果斤数："+appleQty.toString());
-        System.out.println("买入草莓斤数："+starwberryQty.toString());
-        System.out.println("买入mango斤数："+mangoQty.toString());
+
+        for(Map.Entry<Fruit, BigDecimal> item: cart.getItems().entrySet()){
+            System.out.println("买入水果"+item.getKey().getName()+"每斤/元："+item.getKey().getPrice()+"买入斤数："+item.getValue().toString());
+        }
 
         System.out.println("第三题买入总价元："+totalExpected);
 
@@ -157,22 +160,32 @@ public class AppTest {
         BigDecimal appLeValue = new BigDecimal(apple.getPrice()).multiply(appleQty);
         BigDecimal starwberryValue=new BigDecimal(starwberry.getPrice()).multiply(starwberryQty).multiply(Discount.STRAWBERRY_DISCOUNT_RATE);
         BigDecimal mangoValue=new BigDecimal(mango.getPrice()).multiply(mangoQty);
-
-        //期望的金额
         BigDecimal totalExpected=appLeValue.add(starwberryValue).add(mangoValue);
-        BigDecimal discountTimes = totalExpected.divide(Discount.DISCOUNT_MAX_PRICE, 0,BigDecimal.ROUND_DOWN);
-        System.out.println("满减次数："+discountTimes);
-        BigDecimal totalDiscount = Discount.DISCOUNT_PRICE.multiply(discountTimes);
-        totalExpected= totalExpected.subtract(totalDiscount);
 
-        System.out.println("买入苹果斤数："+appleQty.toString());
-        System.out.println("买入草莓斤数："+starwberryQty.toString());
-        System.out.println("买入mango斤数："+mangoQty.toString());
+        boolean loop =true;
+        if(loop){
+            //逐次满减 期望的金额
+            BigDecimal discountTimes = totalExpected.divide(Discount.DISCOUNT_MAX_PRICE, 0,BigDecimal.ROUND_DOWN);
+            System.out.println("满减次数："+discountTimes);
+            BigDecimal totalDiscount = Discount.DISCOUNT_PRICE.multiply(discountTimes);
+            totalExpected= totalExpected.subtract(totalDiscount);
+        }else {
+            //一次性满减金额
+            if (totalExpected.compareTo(Discount.DISCOUNT_MAX_PRICE) > 0) {
+                //大于满减的钱
+                totalExpected = totalExpected.subtract(Discount.DISCOUNT_PRICE);
+            }
+        }
+
+
+        for(Map.Entry<Fruit, BigDecimal> item: cart.getItems().entrySet()){
+            System.out.println("买入水果"+item.getKey().getName()+"每斤/元："+item.getKey().getPrice()+"买入斤数："+item.getValue().toString());
+        }
 
         System.out.println("第四题买入总价元："+totalExpected);
 
         //对比总价
-        assertEquals(totalExpected, cart.calculateTotalForReduction(Discount.DISCOUNT_MAX_PRICE, Discount.DISCOUNT_PRICE));
+        assertEquals(totalExpected, cart.calculateTotalForReduction(Discount.DISCOUNT_MAX_PRICE, Discount.DISCOUNT_PRICE,loop));
     }
 
 }

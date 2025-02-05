@@ -19,6 +19,10 @@ public class ShoppingCart {
     //存放水果的map
     private Map<Fruit, BigDecimal> items = new HashMap<>(); //斤数使用BigDecimal类型防止溢出
 
+    public Map<Fruit, BigDecimal> getItems() {
+        return items;
+    }
+
     /**
      * 买水果方法，往里面放
      *
@@ -26,12 +30,12 @@ public class ShoppingCart {
      * @param qty
      */
     public void addFruit(Fruit fruit, BigDecimal qty) {
-        if (Objects.isNull(qty) || qty.compareTo(BigDecimal.ZERO)< 0) {
+        if (Objects.isNull(qty) || qty.compareTo(BigDecimal.ZERO) < 0) {
             System.out.println("===>购买数量不能为负数");
             throw new RuntimeException("数量不能为负数");
         }
         //放水果入，累加
-        items.put(fruit, items.getOrDefault(fruit, BigDecimal.ZERO).add( qty));
+        items.put(fruit, items.getOrDefault(fruit, BigDecimal.ZERO).add(qty));
     }
 
     // 计算总价
@@ -53,6 +57,7 @@ public class ShoppingCart {
 
     /**
      * 打折后的总结
+     *
      * @param discountRate 打折率
      * @return
      */
@@ -68,24 +73,33 @@ public class ShoppingCart {
     }
 
 
-
     /**
      * 满减的时候计算总价
+     *
      * @param discountMaxPrice 满多少元
-     * @param discountPrice 减多少元
+     * @param discountPrice    减多少元
+     * @param loop             是否依次满减还是一次满减 true 逐次满减，false 一次性的满减
      * @return
      */
-    public BigDecimal calculateTotalForReduction(BigDecimal discountMaxPrice, BigDecimal discountPrice) {
-        if (Objects.isNull(discountMaxPrice) ||Objects.isNull(discountPrice)|| discountPrice.compareTo(BigDecimal.ZERO) < 0 || discountMaxPrice.compareTo(BigDecimal.ZERO) < 0) {
+    public BigDecimal calculateTotalForReduction(BigDecimal discountMaxPrice, BigDecimal discountPrice, boolean loop) {
+        if (Objects.isNull(discountMaxPrice) || Objects.isNull(discountPrice) || discountPrice.compareTo(BigDecimal.ZERO) < 0 || discountMaxPrice.compareTo(BigDecimal.ZERO) < 0) {
             System.out.println("===>非法参数");
             throw new RuntimeException("非法参数，请检查!");
         }
         BigDecimal total = calculateTotal();
-        //计算满减的次数 0 取整
-        BigDecimal discountTimes = total.divide(discountMaxPrice,0, BigDecimal.ROUND_DOWN);
-        //总折扣金额
-        BigDecimal totalDiscount = discountPrice.multiply(discountTimes);
-        total= total.subtract(totalDiscount);
+        if (loop) {
+            //计算满减的次数 0 取整
+            BigDecimal discountTimes = total.divide(discountMaxPrice, 0, BigDecimal.ROUND_DOWN);
+            //总折扣金额
+            BigDecimal totalDiscount = discountPrice.multiply(discountTimes);
+            total = total.subtract(totalDiscount);
+        } else {
+            if (total.compareTo(Discount.DISCOUNT_MAX_PRICE) > 0) {
+                //大于满减的钱
+                total = total.subtract(Discount.DISCOUNT_PRICE);
+            }
+        }
+
         //如果满减后不用给钱，返回0，表示免费
         return total.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : total;
     }
