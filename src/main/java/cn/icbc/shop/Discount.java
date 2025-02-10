@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * @Date: 2025/02/04
  * @Description: 打折参数
  */
-public class Discount {
+public interface Discount {
 
         //不打折
         public static final BigDecimal NOT_DISCOUNT_RATE = new BigDecimal("1");

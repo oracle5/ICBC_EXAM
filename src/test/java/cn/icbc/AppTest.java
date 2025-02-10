@@ -3,6 +3,7 @@ package cn.icbc;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import cn.icbc.enums.FruitsEnum;
 import cn.icbc.fruits.Apple;
 import cn.icbc.fruits.Mango;
 import cn.icbc.fruits.Strawberry;
@@ -32,8 +33,8 @@ public class AppTest {
      */
     @Test
     public void testExamOne() {
-        Fruit apple = new Apple("apple",8);
-        Fruit starwberry = new Strawberry("starwberry", 13);
+        Fruit apple = new Apple(FruitsEnum.APPLE.getName(),FruitsEnum.APPLE.getPrice());
+        Fruit starwberry = new Strawberry(FruitsEnum.STRAWBERRY.getName(), FruitsEnum.STRAWBERRY.getPrice());
         ShoppingCart cart = new ShoppingCart();
         //苹果数量
         BigDecimal appleQty=new BigDecimal("10000023234526346363262");
@@ -62,9 +63,9 @@ public class AppTest {
      */
     @Test
     public void testExamTwo() {
-        Fruit apple = new Apple("apple",8);
-        Fruit starwberry = new Strawberry("starwberry", 13);
-        Fruit mango =new Mango("mango",20);
+        Fruit apple = new Apple(FruitsEnum.APPLE.getName(),FruitsEnum.APPLE.getPrice());
+        Fruit starwberry = new Strawberry(FruitsEnum.STRAWBERRY.getName(), FruitsEnum.STRAWBERRY.getPrice());
+        Fruit mango =new Mango(FruitsEnum.MANGO.getName(),FruitsEnum.MANGO.getPrice());
 
         ShoppingCart cart = new ShoppingCart();
         //苹果数量
@@ -100,9 +101,9 @@ public class AppTest {
      */
     @Test
     public void testExamThree() {
-        Fruit apple = new Apple("apple",8);
-        Fruit starwberry = new Strawberry("starwberry", 13,Discount.STRAWBERRY_DISCOUNT_RATE);
-        Fruit mango =new Mango("mango",20);
+        Fruit apple = new Apple(FruitsEnum.APPLE.getName(),FruitsEnum.APPLE.getPrice());
+        Fruit starwberry = new Strawberry(FruitsEnum.STRAWBERRY.getName(), FruitsEnum.STRAWBERRY.getPrice(),Discount.STRAWBERRY_DISCOUNT_RATE);
+        Fruit mango =new Mango(FruitsEnum.MANGO.getName(),FruitsEnum.MANGO.getPrice());
 
         ShoppingCart cart = new ShoppingCart();
         //苹果数量
@@ -139,9 +140,9 @@ public class AppTest {
      */
     @Test
     public void testExamFour() {
-        Fruit apple = new Apple("apple",8);
-        Fruit starwberry = new Strawberry("starwberry", 13,Discount.STRAWBERRY_DISCOUNT_RATE);
-        Fruit mango =new Mango("mango",20);
+        Fruit apple = new Apple(FruitsEnum.APPLE.getName(),FruitsEnum.APPLE.getPrice());
+        Fruit starwberry = new Strawberry(FruitsEnum.STRAWBERRY.getName(), FruitsEnum.STRAWBERRY.getPrice(),Discount.STRAWBERRY_DISCOUNT_RATE);
+        Fruit mango =new Mango(FruitsEnum.MANGO.getName(),FruitsEnum.MANGO.getPrice());
 
         ShoppingCart cart = new ShoppingCart();
         //苹果数量

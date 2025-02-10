@@ -1,6 +1,7 @@
 ### ICBC测验题
 ``` lua
 ICBC_EXAM
+├── enums --  枚举类
 ├── fruits -- 水果类
 ├── shop -- 购物类相关
 ├── test -- 单元测试
